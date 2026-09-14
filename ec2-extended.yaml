@@ -1,0 +1,10 @@
+Resources:
+  MyInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0abcdef1234567890   # Replace with a real AMI
+      InstanceType: t2.micro
+      KeyName: myKeyPair               # Optional
+      SecurityGroupIds:
+        - sg-0123456789abcdef0         # Optional
+      SubnetId: subnet-0123456789abcdef0
