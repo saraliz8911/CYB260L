@@ -1,0 +1,65 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  VPC template for us-west-2 with at least 3 Availability Zones.
+  VPC name: VPC-sarhen0207
+
+Resources:
+  VPCsarhen0207:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: VPC-sarhen0207
+
+  PublicSubnetAZ1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPCsarhen0207
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: PublicSubnet-AZ1
+
+  PublicSubnetAZ2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPCsarhen0207
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: !Select [1, !GetAZs ""]
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: PublicSubnet-AZ2
+
+  PublicSubnetAZ3:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPCsarhen0207
+      CidrBlock: 10.0.3.0/24
+      AvailabilityZone: !Select [2, !GetAZs ""]
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: PublicSubnet-AZ3
+
+Outputs:
+  VPCId:
+    Description: ID of the created VPC
+    Value: !Ref VPCsarhen0207
+
+  SubnetAZ1Id:
+    Description: ID of subnet in AZ1
+    Value: !Ref PublicSubnetAZ1
+
+  SubnetAZ2Id:
+    Description: ID of subnet in AZ2
+    Value: !Ref PublicSubnetAZ2
+
+  SubnetAZ3Id:
+    Description: ID of subnet in AZ3
+    Value: !Ref PublicSubnetAZ3
