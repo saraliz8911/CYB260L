@@ -1,65 +1,19 @@
-AWSTemplateFormatVersion: "2010-09-09"
-Description: >
-  VPC template for us-west-2 with at least 3 Availability Zones.
-  VPC name: VPC-sarhen0207
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Amazon Elastic Compute Cloud (EC2) Template
+
+Parameters:
+  LatestAmiId:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2
 
 Resources:
-  VPCsarhen0207:
-    Type: AWS::EC2::VPC
+  EC2Instance:
+    Type: AWS::EC2::Instance
     Properties:
-      CidrBlock: 10.0.0.0/16
-      EnableDnsSupport: true
-      EnableDnsHostnames: true
-      Tags:
-        - Key: Name
-          Value: VPC-sarhen0207
-
-  PublicSubnetAZ1:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref VPCsarhen0207
-      CidrBlock: 10.0.1.0/24
-      AvailabilityZone: !Select [0, !GetAZs ""]
-      MapPublicIpOnLaunch: true
-      Tags:
-        - Key: Name
-          Value: PublicSubnet-AZ1
-
-  PublicSubnetAZ2:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref VPCsarhen0207
-      CidrBlock: 10.0.2.0/24
-      AvailabilityZone: !Select [1, !GetAZs ""]
-      MapPublicIpOnLaunch: true
-      Tags:
-        - Key: Name
-          Value: PublicSubnet-AZ2
-
-  PublicSubnetAZ3:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref VPCsarhen0207
-      CidrBlock: 10.0.3.0/24
-      AvailabilityZone: !Select [2, !GetAZs ""]
-      MapPublicIpOnLaunch: true
-      Tags:
-        - Key: Name
-          Value: PublicSubnet-AZ3
+      ImageId: !Ref LatestAmiId
+      InstanceType: t2.micro
 
 Outputs:
-  VPCId:
-    Description: ID of the created VPC
-    Value: !Ref VPCsarhen0207
-
-  SubnetAZ1Id:
-    Description: ID of subnet in AZ1
-    Value: !Ref PublicSubnetAZ1
-
-  SubnetAZ2Id:
-    Description: ID of subnet in AZ2
-    Value: !Ref PublicSubnetAZ2
-
-  SubnetAZ3Id:
-    Description: ID of subnet in AZ3
-    Value: !Ref PublicSubnetAZ3
+  InstanceId:
+    Description: Instance ID of the EC2 instance
+    Value: !Ref EC2Instance
